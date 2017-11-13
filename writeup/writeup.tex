@@ -1,0 +1,100 @@
+\documentclass[a4paper]{article}
+
+\input{style/common.tex}
+
+\lstset{frame=, basicstyle={\footnotesize\ttfamily}}
+
+
+
+\graphicspath{ {images/} }
+\usepackage[margin=1in]{geometry}
+\usepackage{subcaption}
+\usepackage{sectsty}% http://ctan.org/pkg/sectsty
+\usepackage{xcolor}% http://ctan.org/pkg/xcolor
+\usepackage{setspace}
+\definecolor{lit}{HTML}{007F00}
+\allsectionsfont{\color{lit}}
+%-----------------------------------------BEGIN DOC----------------------------------------
+
+\begin{document}
+
+%\doublespacing
+\title{MedRec}
+
+\begin{titlepage}
+\begin{center}
+
+\textsc{\Large MIT 6.830}\\[4em]
+
+\vspace{4em}
+
+\textsc{\huge \textbf{Applying SimpleDB to d3.js}}\\[4em]
+
+\textsc{\large Research}\\[1em]
+
+\textsc{by}\\[1em]
+
+\textsc{\Large Ermain, Nchinda, Teddy}\\[1em]
+
+\end{center}
+
+\vspace*{\fill}
+\textsc{MIT Media Lab\hspace*{\fill} 2017}
+
+\end{titlepage}
+%-----------------------------------------ABSTRACT-------------------------------------
+\begin{center}
+{\large\bf{Abstract\\}}
+\end{center}
+abstract stuff
+%-----------------------------------------CONTENT-------------------------------------
+\tableofcontents\label{c}
+\newpage
+
+%----------------------------------------OVERVIEW-----------------------------------------
+
+\section{Introduction} \label{overview}%------------------------------
+\subsection{d3.js}
+\section{Library Analysis}
+\begin{verbatim}
+Arrays
+	Statistics
+	Search
+	Transformations
+	Histograms
+Axes - doesn't do anything wilh getting points, just displays data
+Chords
+Delimiter-Separated Values
+Geographies 
+	Paths
+	Projections
+	Spherical Math, Spherical Shapes, Streams, Transforms)
+Hierarchies
+Quadtrees
+Scales (Continuous, Sequential, Quantize, Ordinal)
+Selections (Selecting, Modifying, Data, Events, Control, Local Variables, Namespaces)
+Time Intervals
+Zooming - no nested loops found, likely offloads bulk of processing to quadtrees
+-Forces -based on quadtrees, can't really do anything here
+-Transitions - https://github.com/d3/d3-transition/blob/master/src/transition/select.js we could do something here
+\end{verbatim}
+
+\section{Improvements}
+
+\section{Related Work}
+
+\section{Conclusion}
+
+
+\section{Acknowledgements}
+
+
+% -----------------------------------REFERENCE----------------------------------------
+\begin{thebibliography}{9}
+\bibitem{ourrepo} https://github.com/ermain/d3js\_experiments
+\bibitem{d3js} https://github.com/d3/d3/blob/master/API.md
+\end{thebibliography}
+
+% -----------------------------------Appendix----------------------------------------
+\end{document}
+
