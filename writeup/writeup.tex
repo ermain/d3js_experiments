@@ -12,7 +12,7 @@
 \usepackage{sectsty}% http://ctan.org/pkg/sectsty
 \usepackage{xcolor}% http://ctan.org/pkg/xcolor
 \usepackage{setspace}
-\definecolor{lit}{HTML}{007F00}
+\definecolor{lit}{HTML}{aa5500}
 \allsectionsfont{\color{lit}}
 %-----------------------------------------BEGIN DOC----------------------------------------
 
@@ -39,7 +39,7 @@
 \end{center}
 
 \vspace*{\fill}
-\textsc{MIT Media Lab\hspace*{\fill} 2017}
+\textsc{MIT 6.830\hspace*{\fill} 2017}
 
 \end{titlepage}
 %-----------------------------------------ABSTRACT-------------------------------------
@@ -55,36 +55,43 @@ abstract stuff
 
 \section{Introduction} \label{overview}%------------------------------
 \subsection{d3.js}
+-what is d3
+\subsection{Motivation}
+-the class and simpledb
+-who is holger
 \section{Library Analysis}
-\begin{verbatim}
-Arrays
-	Statistics
-	Search
-	Transformations
-	Histograms
+We looked through the submodules of d3.js for potential places it could be improved by techniques we learned in 6.830.
+
+Arrays - cross.js, the cross product submodule uses a nested for loop, but to compute cross products which makes sense
+
 Axes - doesn't do anything wilh getting points, just displays data
-Chords
-Delimiter-Separated Values
-Geographies 
-	Paths
-	Projections
-	Spherical Math, Spherical Shapes, Streams, Transforms)
-Hierarchies
-Quadtrees
-Scales (Continuous, Sequential, Quantize, Ordinal)
-Selections (Selecting, Modifying, Data, Events, Control, Local Variables, Namespaces)
-Time Intervals
+
+Chords - don't really think there's much here
+
+Delimiter-Separated Values - only iterates through the elementes of a table
+
+Geographies - this does not use nested loop joins
+
+Hierarchies - this is literally a tri structure, an index on top won't really help
+
+Quadtrees - this is a search library used by other libraries, 
+
+Scales- does not work with combining points, uses interpolaters to translate an input into value in a range
+
+Selections - there are nested for loops everywhere
+
+Time Intervals - there are no nested loops here, but maybe for large intervals it would be better to get $O(logn)$ time queries instead of $O(n)$. This isn't our main focus though
+
 Zooming - no nested loops found, likely offloads bulk of processing to quadtrees
 -Forces -based on quadtrees, can't really do anything here
 -Transitions - https://github.com/d3/d3-transition/blob/master/src/transition/select.js we could do something here
-\end{verbatim}
 
 \section{Improvements}
-
-\section{Related Work}
-
+-make a boolean flag to enable index creation
+-create an index based on user provided id for nodes and comparator, when new nodes are added make sure to add them to the index too
+\section{Results}
+-how does our text example run with this new code
 \section{Conclusion}
-
 
 \section{Acknowledgements}
 
