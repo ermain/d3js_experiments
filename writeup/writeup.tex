@@ -86,6 +86,8 @@ Zooming - no nested loops found, likely offloads bulk of processing to quadtrees
 -Forces -based on quadtrees, can't really do anything here
 -Transitions - https://github.com/d3/d3-transition/blob/master/src/transition/select.js we could do something here
 
+In addition to evaluating libraries at a high level, we also looked at the perfomance of a piece of sample code using d3.js v4, to try and get an idea of where we might be able to improve performance. (insert link to moving-circle-thing -- should probably move it to some other subdirectory later if we choose to do some other example). In order to get an idea of where the hang-ups in the loading/rendering(?) of the sample code was, we captured a ~1 second profile in Chrome while we moved the mouse around to disturb the circles. [insert pic frame_1_analysis.png here] Most of the frames looked similar at first glance as to what was causing the time-delays, so we focused on one frame to analyze. Overall each frame seems to take about 60-70ms to be calculated and rendered (15 FPS), with half of the time spent calculating the style and the other half in "animation frame fired". The code appears to use a quadtree to store the circles, which makes sense since a quadtree is best used to store objects by position. About 30ms of the animation time was dedicated to traversing the quadtree/doing quadtree-related things; the profiler marked the "force" function (at line 5848) and "apply" function (at line 5868) as big time sinks. This seems like a potential place to use an index. (see some_slowish_code.png)
+
 \section{Improvements}
 -make a boolean flag to enable index creation
 -create an index based on user provided id for nodes and comparator, when new nodes are added make sure to add them to the index too
