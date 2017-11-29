@@ -1,0 +1,15 @@
+[submodule "app/d3-quadtree"]
+	path = app/d3-quadtree
+	url = git@github.com:Firescar96/d3-quadtree.git
+[submodule "app/d3-force"]
+	path = app/d3-force
+	url = git@github.com:Firescar96/d3-force.git
+[submodule "app/lib/d3-selection"]
+	path = app/lib/d3-selection
+	url = git@github.com:ermain/d3-selection.git
+[submodule "app/lib/d3-force"]
+	path = app/lib/d3-force
+	url = git@github.com:ermain/d3-force.git
+[submodule "app/lib/-r"]
+	path = app/lib/-r
+	url = git@github.com:firescar96/d3-quadtree

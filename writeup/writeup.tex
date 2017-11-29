@@ -60,6 +60,10 @@ abstract stuff
 -the class and simpledb
 -who is holger
 \section{Library Analysis}
+\subsection{Potential Optimizations}
+-we looked at creating an index
+-we looked at caching to remove the need to scan the document selector on each call to find elements as is the common paridgm
+\subsection{d3 submodules}
 We looked through the submodules of d3.js for potential places it could be improved by techniques we learned in 6.830.
 
 Arrays - cross.js, the cross product submodule uses a nested for loop, but to compute cross products which makes sense
@@ -74,7 +78,7 @@ Geographies - this does not use nested loop joins
 
 Hierarchies - this is literally a tri structure, an index on top won't really help
 
-Quadtrees - this is a search library used by other libraries, 
+Quadtrees - this is a search library used by other libraries,
 
 Scales- does not work with combining points, uses interpolaters to translate an input into value in a range
 
@@ -83,14 +87,19 @@ Selections - there are nested for loops everywhere
 Time Intervals - there are no nested loops here, but maybe for large intervals it would be better to get $O(logn)$ time queries instead of $O(n)$. This isn't our main focus though
 
 Zooming - no nested loops found, likely offloads bulk of processing to quadtrees
--Forces -based on quadtrees, can't really do anything here
+-Forces -cross library nested loop join in the way collide computes collisions combined with the way quadtrees gets points
+--previously O(n^2) by two loops, now O(nlogn) by one loop and one logn lookup
 -Transitions - https://github.com/d3/d3-transition/blob/master/src/transition/select.js we could do something here
 
+\section{d3-selection}
+-write about what this library is used for
+-it creates a new selection every time it's called, using the 'document' page object to find all the relevant objects
+-this could be memoized, using browser localstorage, don't need to reinsert elements that already have been inserted
 \section{Improvements}
 -make a boolean flag to enable index creation
 -create an index based on user provided id for nodes and comparator, when new nodes are added make sure to add them to the index too
 \section{Results}
--how does our text example run with this new code
+-how does our intersections example run with this new code
 \section{Conclusion}
 
 \section{Acknowledgements}
@@ -104,4 +113,3 @@ Zooming - no nested loops found, likely offloads bulk of processing to quadtrees
 
 % -----------------------------------Appendix----------------------------------------
 \end{document}
-
