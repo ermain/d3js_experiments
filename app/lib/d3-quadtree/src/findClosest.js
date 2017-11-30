@@ -1,6 +1,29 @@
 import Quad from "./quad";
 
-export default function(x, y, k, radius) {
+function intersects (rect, circle)
+{
+    // compute a center-to-center vector
+    var half = { x: rect.w/2, y: rect.h/2 };
+    var center = {
+        x: circle.x - (rect.x+half.x),
+        y: circle.y - (rect.y+half.y)};
+
+    // check circle position inside the rectangle quadrant
+    var side = {
+        x: Math.abs (center.x) - half.x,
+        y: Math.abs (center.y) - half.y};
+    if (side.x >  circle.r || side.y >  circle.r) // outside
+        return false;
+    if (side.x < -circle.r && side.y < -circle.r) // inside
+        return true;
+    if (side.x < 0 || side.y < 0) // intersects side or corner
+        return true;
+
+    // circle is near the corner
+    return side.x*side.x + side.y*side.y  < circle.r*circle.r;
+}
+
+export default function(x, y, radius) {
   var data = [],
       x0 = this._x0,
       y0 = this._y0,
@@ -20,26 +43,23 @@ export default function(x, y, k, radius) {
   else {
     x0 = x - radius, y0 = y - radius;
     x3 = x + radius, y3 = y + radius;
-    radius *= radius;
+    radius = radius;
   }
 
-  let visited = {}
   while (q = quads.pop()) {
-    if(data.length >= k) {
-      break;
-    }
 
+    // Stop searching if this quadrant can’t contain a closer node.
+    if (!(node = q.node))continue;
+    x1 = q.x0;
+    x2 = q.x1;
+    y1 = q.y0;
+    y2 = q.y1;
+    var rectBound = { x:x1, y:y1, w:(x2-x1), h:(y2-y1)};
+    var circleBound = {x:x, y:y, r:radius };
+    if(!intersects(rectBound, circleBound)) continue
 
-    // Stop searching if this quadrant doesn't contain any nodes
-    if (!(node = q.node))
-      continue;
-
+    // Bisect the current quadrant.
     if (node.length) {
-      x1 = q.x0,
-      y1 = q.y0,
-      x2 = q.x1,
-      y2 = q.y1;
-
       var xm = (x1 + x2) / 2,
           ym = (y1 + y2) / 2;
 
@@ -58,22 +78,13 @@ export default function(x, y, k, radius) {
       }
     }
 
-    // Visit this point and coincident points
+    // Visit the leaf points
     else {
-      if(visited[node.data.index]) continue;
-      visited[node.data.index] = true;
       do {
-        var dx = x - +this._x.call(null, node.data),
-            dy = y - +this._y.call(null, node.data),
-            d2 = dx * dx + dy * dy;
-        if (d2 < radius) {
-          var d = Math.sqrt(d2);
-          x0 = x - d, y0 = y - d;
-          x3 = x + d, y3 = y + d;
           data.push(node.data);
-        }
-      } while(node = node.next && data.length < k)
+      }while(node = node.next)
     }
   }
+
   return data;
 }
