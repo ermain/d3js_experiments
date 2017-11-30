@@ -3,7 +3,15 @@
 \contentsline {subsection}{\numberline {1.1}d3.js}{2}{subsection.1.1}
 \contentsline {subsection}{\numberline {1.2}Motivation}{2}{subsection.1.2}
 \contentsline {section}{\numberline {2}Library Analysis}{2}{section.2}
-\contentsline {section}{\numberline {3}Improvements}{2}{section.3}
-\contentsline {section}{\numberline {4}Results}{2}{section.4}
-\contentsline {section}{\numberline {5}Conclusion}{2}{section.5}
-\contentsline {section}{\numberline {6}Acknowledgements}{2}{section.6}
+\contentsline {subsection}{\numberline {2.1}Selections}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Delimiter-Separated Values}{3}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Quadtrees}{3}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Time Intervals}{3}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Forces}{3}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.6}Transitions}{3}{subsection.2.6}
+\contentsline {subsection}{\numberline {2.7}Potential Optimizations}{3}{subsection.2.7}
+\contentsline {section}{\numberline {3}d3-selection}{3}{section.3}
+\contentsline {section}{\numberline {4}Improvements}{3}{section.4}
+\contentsline {section}{\numberline {5}Results}{4}{section.5}
+\contentsline {section}{\numberline {6}Conclusion}{4}{section.6}
+\contentsline {section}{\numberline {7}Acknowledgements}{4}{section.7}

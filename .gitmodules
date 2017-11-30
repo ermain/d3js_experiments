@@ -13,3 +13,6 @@
 [submodule "app/lib/-r"]
 	path = app/lib/-r
 	url = git@github.com:firescar96/d3-quadtree
+[submodule "app/lib/d3-array"]
+	path = app/lib/d3-array
+	url = git@github.com:Firescar96/d3-array.git

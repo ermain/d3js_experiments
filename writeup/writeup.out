@@ -2,7 +2,15 @@
 \BOOKMARK [2][-]{subsection.1.1}{d3.js}{section.1}% 2
 \BOOKMARK [2][-]{subsection.1.2}{Motivation}{section.1}% 3
 \BOOKMARK [1][-]{section.2}{Library Analysis}{}% 4
-\BOOKMARK [1][-]{section.3}{Improvements}{}% 5
-\BOOKMARK [1][-]{section.4}{Results}{}% 6
-\BOOKMARK [1][-]{section.5}{Conclusion}{}% 7
-\BOOKMARK [1][-]{section.6}{Acknowledgements}{}% 8
+\BOOKMARK [2][-]{subsection.2.1}{Selections}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Delimiter-Separated Values}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.3}{Quadtrees}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.4}{Time Intervals}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.5}{Forces}{section.2}% 9
+\BOOKMARK [2][-]{subsection.2.6}{Transitions}{section.2}% 10
+\BOOKMARK [2][-]{subsection.2.7}{Potential Optimizations}{section.2}% 11
+\BOOKMARK [1][-]{section.3}{d3-selection}{}% 12
+\BOOKMARK [1][-]{section.4}{Improvements}{}% 13
+\BOOKMARK [1][-]{section.5}{Results}{}% 14
+\BOOKMARK [1][-]{section.6}{Conclusion}{}% 15
+\BOOKMARK [1][-]{section.7}{Acknowledgements}{}% 16

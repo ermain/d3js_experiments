@@ -1,6 +1,6 @@
 import constant from "./constant";
 import jiggle from "./jiggle";
-import {quadtree} from "../../d3-quadtree";
+import {quadtree} from "d3-quadtree";
 
 function x(d) {
   return d.x + d.vx;
@@ -29,38 +29,35 @@ export default function(radius) {
 
     for (var k = 0; k < iterations; ++k) {
       tree = quadtree(nodes, x, y).visitAfter(prepare);
-      window.tree = tree;
       for (i = 0; i < n; ++i) {
         node = nodes[i];
-        ri = radii[node.index];
-        ri2 = ri * ri;
+        ri = radii[node.index], ri2 = ri * ri;
         xi = node.x + node.vx;
         yi = node.y + node.vy;
-        let closestNodes = tree.findClosest(xi, yi, ri2)
-        closestNodes.forEach(elem => apply(elem, x))
+        tree.visit(apply);
       }
     }
 
-    function apply(data) {
-      var rj = data.r,
-      r = ri + rj;
-      if(data.index > node.index) {
-        var x = xi - data.x - data.vx,
-            y = yi - data.y - data.vy,
-            l = x * x + y * y;
-        if (l < (r * r)) {
-        // console.log('scale r', l, r);
-          if (x === 0) x = jiggle(), l += x * x;
-          if (y === 0) y = jiggle(), l += y * y;
-          l = (r - (l = Math.sqrt(l))) / l * strength;
-          // let oldvx = node.vx
-          node.vx += (x *= l) * (r = (rj *= rj) / (ri2 + rj));
-          // console.log(node.vx - oldvx);
-          node.vy += (y *= l) * r;
-          data.vx -= x * (r = 1 - r);
-          data.vy -= y * r;
+    function apply(quad, x0, y0, x1, y1) {
+      var data = quad.data, rj = quad.r, r = ri + rj;
+      if (data) {
+        if (data.index > node.index) {
+          var x = xi - data.x - data.vx,
+              y = yi - data.y - data.vy,
+              l = x * x + y * y;
+          if (l < r * r) {
+            if (x === 0) x = jiggle(), l += x * x;
+            if (y === 0) y = jiggle(), l += y * y;
+            l = (r - (l = Math.sqrt(l))) / l * strength;
+            node.vx += (x *= l) * (r = (rj *= rj) / (ri2 + rj));
+            node.vy += (y *= l) * r;
+            data.vx -= x * (r = 1 - r);
+            data.vy -= y * r;
+          }
         }
+        return;
       }
+      return x0 > xi + r || x1 < xi - r || y0 > yi + r || y1 < yi - r;
     }
   }
 

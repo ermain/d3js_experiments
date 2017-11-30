@@ -19,7 +19,7 @@
 \begin{document}
 
 %\doublespacing
-\title{MedRec}
+\title{D3 DB}
 
 \begin{titlepage}
 \begin{center}
@@ -55,42 +55,41 @@ abstract stuff
 
 \section{Introduction} \label{overview}%------------------------------
 \subsection{d3.js}
--what is d3
+Data Driven Documents, commonly known as d3.js is a popular graphics and visualization library for javascript. It is primarily developed by Mike Bostock (mbostock), a developer and former Ph.D student at Stanford University. It was during his studies there in the Stanford Vis Group that d3 was first conceived. MBostock and two other researchers published a paper describing a new paridigm for unifying data and web documents. D3 not only joins data to visual page elements, but it makes the underlying data representation transparent so it can be manipulated with changes reflected in the visual representation. The HTML Document Object Model is by itself a static data structure, d3 provides transforms, animations, and iteractivity. At the time of writing th D3 library has 70,451 stars on the code sharing repository GitHub, 17,903 more than Linus Torvald's Linux repository and placing it in the top 10 most popular GitHub repos.
+	
+	 D3 was designed to provide an alternative to existing data manipulation libraries which abstracted away the lower level representation of data. To that end D3 provides both operations on the HTML document elements that are bound to data elements as well as high level operations. The developer using the d3 api has access to common, tedious, and complex transforms as a single api call while maintaining the ability to explicitly override any of d3's functionality with custom functions. Developers can selectively bind html elements to their data expresing what should happen when data changes, new data is generated, and existing data destroyed. Operators are evaluated in real time and can be chained together, for example: d3 provides an api to create a scale from a range of data which then can be fed into an axis generator which then can be automatically displayed. Any updates to the underlying data propogates to the viewable result.
 \subsection{Motivation}
--the class and simpledb
--who is holger
+In 6.830, MIT's Database Systems class students, including the authors, were challenged to use the concepts learned in class in a final project. We were inspired to look at D3.js by a comment from a person unaffiliated with the class that D3 used "a number of database-like constructs internally, some of which are quite primitive. For example, they use nested loop joins and don’t reorder selections." We thought this to be an interesting challenge with multiple positive aspects.
+\begin{enumerate}
+\item We would have to apply concepts learned in class for database systems to a very different scope.
+\item Our work if successful would have an impact on an already succesful and public project
+\item Once in the d3 codebase our work would continue to be maintained in perpetuity
+\end{enumerate}
+
+Unfortunately that remark alone is not enough to form a substantial project, it leaves out the important question of where among D3's submodules one can find the inefficiencies it speaks of. The Library Analysis section below details the results of our group's work to find potential inefficiencies and areas for improvement in the D3 library.
 \section{Library Analysis}
+We looked through all of the submodules of D3 for potential places it could be improved by techniques we learned in 6.830. We paid particular attention to places that used nested for loops as those were the motivation for the project. After reading through the d3 codebase the following are descriptions of d3 modules in which we found held potential for improvement via this project.
+
+\subsection{Selections}
+d3-selection is that first library that we analyzed. It fufils the original promise of d3, selecting HTML document elements and joining them with data. It provides setter and getter functions for html element attributes, text, and styling. We believe this library is the origin of the idea of this project, simply searching for the word "for" in the module source code revealed mutiple places where similar looking code was used to do a nested loop over two elements.
+
+\subsection{Delimiter-Separated Values}
+d3-dsv parses tabular data into a format that can be manipulted and displayed. D3-dsv provides parsing the most common data formats as a single api call, but also provides a function to allow users to specify arbitrary operations on the input dat. In a github issue mbostock suggests a new feature for d3, streaming data \cite{dsvstream} from files. Streaming data falls under the category of topics that we learned in 6.830. The idea is analogous to the iterator we each had to build to iterate over tuples in a simple database. Adding streaming capability to d3 could dramatically enhance it's efficiency in processing transforms over data, allowing it to pipeline data processing with data retrieval. An extension of this application would provide a more pleasant user experience, showing a visualization computed using a portion of the base data set while the rest loaded in the background.
+
+\subsection{Quadtrees}
+d3-quadtree is used by other d3 modules to represent datums stored in a 2D space. For example: d3-force uses d3-quadtree to efficiently find nodes that are colliding. Since this d3 module is so heavily used we decided to examine the implementation.
+-went through process of rewriting search, realized d3 already does it pretty fast
+- this is just the power of d3
+
+\subsection{Time Intervals}, d3-time - there are no nested loops here, but maybe for large intervals it would be better to get $O(logn)$ time queries instead of $O(n)$. This isn't our main focus though
+
+\subsection{Forces}, d3-force - collide looks like it's running slow based on experiments but it's about fastest possible using quadtrees, link to the test example in citations
+
+\subsection{Transitions}, d3-transition - https://github.com/d3/d3-transition/blob/master/src/transition/select.js we could do something here
+
 \subsection{Potential Optimizations}
--we looked at creating an index
+-we looked at creating an index for <what module>
 -we looked at caching to remove the need to scan the document selector on each call to find elements as is the common paridgm
-\subsection{d3 submodules}
-We looked through the submodules of d3.js for potential places it could be improved by techniques we learned in 6.830.
-
-Arrays - cross.js, the cross product submodule uses a nested for loop, but to compute cross products which makes sense
-
-Axes - doesn't do anything wilh getting points, just displays data
-
-Chords - don't really think there's much here
-
-Delimiter-Separated Values - only iterates through the elementes of a table
-
-Geographies - this does not use nested loop joins
-
-Hierarchies - this is literally a tri structure, an index on top won't really help
-
-Quadtrees - this is a search library used by other libraries,
-
-Scales- does not work with combining points, uses interpolaters to translate an input into value in a range
-
-Selections - there are nested for loops everywhere
-
-Time Intervals - there are no nested loops here, but maybe for large intervals it would be better to get $O(logn)$ time queries instead of $O(n)$. This isn't our main focus though
-
-Zooming - no nested loops found, likely offloads bulk of processing to quadtrees
--Forces -cross library nested loop join in the way collide computes collisions combined with the way quadtrees gets points
---previously O(n^2) by two loops, now O(nlogn) by one loop and one logn lookup
--Transitions - https://github.com/d3/d3-transition/blob/master/src/transition/select.js we could do something here
-
 \section{d3-selection}
 -write about what this library is used for
 -it creates a new selection every time it's called, using the 'document' page object to find all the relevant objects
@@ -109,6 +108,8 @@ Zooming - no nested loops found, likely offloads bulk of processing to quadtrees
 \begin{thebibliography}{9}
 \bibitem{ourrepo} https://github.com/ermain/d3js\_experiments
 \bibitem{d3js} https://github.com/d3/d3/blob/master/API.md
+\bibitem{theog} http://vis.stanford.edu/files/2011-D3-InfoVis.pdf
+\bibitem{dsvstream} https://github.com/d3/d3-dsv/issues/20
 \end{thebibliography}
 
 % -----------------------------------Appendix----------------------------------------
