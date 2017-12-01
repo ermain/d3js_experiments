@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<body>
+<script src="https://d3js.org/d3.v4.js"></script>
+<script>
+    const FRAME_WIDTH = window.innerWidth;
+    const FRAME_HEIGHT = window.innerHeight;
+    const GRID_WIDTH = 512;
+    const GRID_HEIGHT = Math.floor(FRAME_HEIGHT / FRAME_WIDTH * GRID_WIDTH);
+    const BRUSH_SIZE = 10;
+
+    const nodes = d3
+      .range(GRID_WIDTH)
+      .map((_, gridX) => (
+        d3
+          .range(GRID_HEIGHT)
+          .map((_, gridY) => ({
+            x: Math.floor(FRAME_WIDTH / GRID_WIDTH * gridX),
+            y: Math.floor(FRAME_HEIGHT / GRID_HEIGHT * gridY),
+          }))
+      ))
+      .reduce((accumulator, column) => {
+        accumulator.push(...column);
+        return accumulator;
+      }, []);
+
+    const svg = d3
+      .select('body')
+      .append('svg')
+      .attr('width', FRAME_WIDTH)
+      .attr('height', FRAME_HEIGHT);
+
+    svg.selectAll('circle')
+      .data(nodes)
+      .enter()
+      .append('circle')
+      .attr('r', node => Math.min(FRAME_WIDTH / GRID_WIDTH, FRAME_HEIGHT / GRID_HEIGHT) / 2)
+      .attr('cx', node => node.x)
+      .attr('cy', node => node.y);
+
+    svg.on("mousemove", function() {
+        const [mouseX, mouseY] = d3.mouse(this);
+        svg.selectAll('circle')
+          .filter(node => Math.abs(node.x - mouseX) < BRUSH_SIZE && Math.abs(node.y - mouseY) < BRUSH_SIZE)
+          .attr('fill', 'red');
+    });
+</script>
