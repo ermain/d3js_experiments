@@ -54,8 +54,8 @@
       //    .filter(node => Math.abs(node.x - mouseX) < BRUSH_SIZE && Math.abs(node.y - mouseY) < BRUSH_SIZE)
       //    .attr('fill', 'red');
         d3.selectRange(index, 
-                       mouseX-BRUSH_SIZE/2, mouseY-BRUSH_SIZE/2,
-                       mouseX+BRUSH_SIZE/2, mouseY+BRUSH_SIZE/2)
+                       mouseX-BRUSH_SIZE, mouseY-BRUSH_SIZE,
+                       mouseX+BRUSH_SIZE, mouseY+BRUSH_SIZE)
                        .attr('fill', 'red');
     });
 </script>
