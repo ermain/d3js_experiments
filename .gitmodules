@@ -20,3 +20,12 @@
         path = analysis/d3-array
         url = https://github.com/Firescar96/d3-array.git
 	branch=benchmark
+[submodule "analysis/d3-joins/array-join"]
+	path = analysis/d3-joins/array-join
+	url = https://github.com/iredchuk/array-join
+[submodule "analysis/analysis/array-join"]
+	path = analysis/analysis/array-join
+	url = https://github.com/Firescar96/array-join
+[submodule "analysis/array-join"]
+	path = analysis/array-join
+	url = https://github.com/Firescar96/array-join
