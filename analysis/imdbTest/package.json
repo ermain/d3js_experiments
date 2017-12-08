@@ -1,0 +1,15 @@
+{
+  "name": "imdbtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "d3-array.js",
+  "dependencies": {
+    "d3-dsv": "^1.0.8",
+    "babel-core": "^6.25.0",
+    "babel-plugin-add-module-exports": "~0.2",
+    "babel-preset-es2015": "~6.24",
+    "gulp": "~3.9",
+    "gulp-benchmark": "~1.1",
+    "gulp-load-plugins": "~1.5"
+  }
+}
