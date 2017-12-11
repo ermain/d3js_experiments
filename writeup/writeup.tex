@@ -13,7 +13,25 @@
 \usepackage{xcolor}% http://ctan.org/pkg/xcolor
 \usepackage{setspace}
 \definecolor{lit}{HTML}{aa5500}
+\usepackage{listings}
 \allsectionsfont{\color{lit}}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  commentstyle=\color{mygreen},    % comment style
+  basicstyle=\footnotesize,
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Java,                 % the language of the code
+rulecolor=\color{black},
+  stepnumber=2,                    % the step between two line-numbers
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+}
 %-----------------------------------------BEGIN DOC----------------------------------------
 
 \begin{document}
@@ -73,6 +91,13 @@ We looked through all of the submodules of D3 for potential places it could be i
 \subsection{Selections}
 d3-selection is that first library that we analyzed. It fufils the original promise of d3, selecting HTML document elements and joining them with data. It provides setter and getter functions for html element attributes, text, and styling. We believe this library is the origin of the idea of this project, simply searching for the word "for" in the module source code revealed mutiple places where similar looking code was used to do a nested loop over two elements.
 
+
+-we looked at creating an index for <what module>
+-we looked at caching to remove the need to scan the document selector on each call to find elements as is the common paridgm
+-write about what this library is used for
+-it creates a new selection every time it's called, using the 'document' page object to find all the relevant objects
+-this could be memoized, using browser localstorage, don't need to reinsert elements that already have been inserted
+
 \subsection{Delimiter-Separated Values}
 d3-dsv parses tabular data into a format that can be manipulted and displayed. D3-dsv provides parsing the most common data formats as a single api call, but also provides a function to allow users to specify arbitrary operations on the input dat. In a github issue mbostock suggests a new feature for d3, streaming data \cite{dsvstream} from files. Streaming data falls under the category of topics that we learned in 6.830. The idea is analogous to the iterator we each had to build to iterate over tuples in a simple database. Adding streaming capability to d3 could dramatically enhance it's efficiency in processing transforms over data, allowing it to pipeline data processing with data retrieval. An extension of this application would provide a more pleasant user experience, showing a visualization computed using a portion of the base data set while the rest loaded in the background.
 
@@ -87,21 +112,47 @@ d3-quadtree is used by other d3 modules to represent datums stored in a 2D space
 
 \subsection{Transitions}, d3-transition - https://github.com/d3/d3-transition/blob/master/src/transition/select.js we could do something here
 
-\subsection{Potential Optimizations}
--we looked at creating an index for <what module>
--we looked at caching to remove the need to scan the document selector on each call to find elements as is the common paridgm
-\section{d3-selection}
--write about what this library is used for
--it creates a new selection every time it's called, using the 'document' page object to find all the relevant objects
--this could be memoized, using browser localstorage, don't need to reinsert elements that already have been inserted
+\subsection{Array}
+	D3 has had an outstanding issue for a few months by mbostock suggesting the addition of database style joins to d3. The feature usecase on the web is analogous to one that might arise when using a traditional relational database such as SQL or PostgreSQL. While in a relational database table records are joined based on matching values in columns, in the proposed d3.join arrays of objects would be joined based on matching keys. In the analogy a table becomes an array of elements, a row becomes the element at a particular index, and the values in a column are a specific property of each element.
+
 \section{Improvements}
 -make a boolean flag to enable index creation
 -create an index based on user provided id for nodes and comparator, when new nodes are added make sure to add them to the index too
+
+\section{d3.join}
+	Resolving the issue created by mbostock on the lack of a $d3.join$ method seemed like an especially appropriate move for us to take. Not only was their demonstrable need from the side of d3's developer, but also ability from our end. Through taking 6.830 we learned tradeoffs between multiple types of database joins and how to implement them. We used the experience gained analysing the d3 libraries to determine what sort of functions would compose an extension to d3 for joins. D3 is a large codebase and it was important to us to maintain homogeneity in style of both implementation code as well as the user API with other d3 modules. Before describing the syntax in full the following is a code sample showing the type of code a user might write.
+	
+\lstset{language=Java} 
+\begin{lstlisting}
+var joinOp = d3.join(dataset1, dataset2)
+    .key(d => d.id)
+var result = joinOp.apply()
+console.log(result)
+\end{lstlisting}
+	
+The user calls d3.join with two datasets (arrays) of values to be joined. They also specify a $key$ function which takes a data element as input and returns the value on which the element should be joined. No computation is actually done until the user calls the $apply$ function. Once the result is returned it can be stored, displayed, used in further processing, etc. As an example the last line of our sample code opts to display the result to the console. The following is a full description of the new $d3.join$ API.
+
+\begin{itemize}
+\item $d3.join()$
+\item join.data(left, right)
+\item join.key(value)
+defaults to identity function
+\item join.leftKey(value)
+\item join.rightKey(value)
+\item join.join(value)
+defaults to nested loop join
+\item join.predicate(value)
+\item join.apply()
+\item d3.nestedLoopJoin
+\item d3.sortMergeJoin
+\item d3.hashJoin
+\end{itemize}
+
 \section{Results}
 -how does our intersections example run with this new code
 
 \subsection{d3.join}
-write something about how most of the joins are faster
+We compared our implementation of common joins to the next two most popular join libraries for javascript and found our implementation to be many times faster.
 \section{Conclusion}
 
 \section{Acknowledgements}
